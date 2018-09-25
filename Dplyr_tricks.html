@@ -74,7 +74,176 @@ mtcars %&gt;%
 
 ---
 
-### Tip 2: Reordering your columns
+### Tip 2: Select columns via regex
+
+If you have matching patterns you can use `starts_with()`, `contains()` or `ends_with()`. But what if your pattern isn't thàt exact? Simple: enter regex into `matches()`
+
+
+```r
+library(dplyr)
+
+iris %&gt;% 
+  select(matches("S.+th"))
+```
+
+```
+##     Sepal.Length Sepal.Width
+## 1            5.1         3.5
+## 2            4.9         3.0
+## 3            4.7         3.2
+## 4            4.6         3.1
+## 5            5.0         3.6
+## 6            5.4         3.9
+## 7            4.6         3.4
+## 8            5.0         3.4
+## 9            4.4         2.9
+## 10           4.9         3.1
+## 11           5.4         3.7
+## 12           4.8         3.4
+## 13           4.8         3.0
+## 14           4.3         3.0
+## 15           5.8         4.0
+## 16           5.7         4.4
+## 17           5.4         3.9
+## 18           5.1         3.5
+## 19           5.7         3.8
+## 20           5.1         3.8
+## 21           5.4         3.4
+## 22           5.1         3.7
+## 23           4.6         3.6
+## 24           5.1         3.3
+## 25           4.8         3.4
+## 26           5.0         3.0
+## 27           5.0         3.4
+## 28           5.2         3.5
+## 29           5.2         3.4
+## 30           4.7         3.2
+## 31           4.8         3.1
+## 32           5.4         3.4
+## 33           5.2         4.1
+## 34           5.5         4.2
+## 35           4.9         3.1
+## 36           5.0         3.2
+## 37           5.5         3.5
+## 38           4.9         3.6
+## 39           4.4         3.0
+## 40           5.1         3.4
+## 41           5.0         3.5
+## 42           4.5         2.3
+## 43           4.4         3.2
+## 44           5.0         3.5
+## 45           5.1         3.8
+## 46           4.8         3.0
+## 47           5.1         3.8
+## 48           4.6         3.2
+## 49           5.3         3.7
+## 50           5.0         3.3
+## 51           7.0         3.2
+## 52           6.4         3.2
+## 53           6.9         3.1
+## 54           5.5         2.3
+## 55           6.5         2.8
+## 56           5.7         2.8
+## 57           6.3         3.3
+## 58           4.9         2.4
+## 59           6.6         2.9
+## 60           5.2         2.7
+## 61           5.0         2.0
+## 62           5.9         3.0
+## 63           6.0         2.2
+## 64           6.1         2.9
+## 65           5.6         2.9
+## 66           6.7         3.1
+## 67           5.6         3.0
+## 68           5.8         2.7
+## 69           6.2         2.2
+## 70           5.6         2.5
+## 71           5.9         3.2
+## 72           6.1         2.8
+## 73           6.3         2.5
+## 74           6.1         2.8
+## 75           6.4         2.9
+## 76           6.6         3.0
+## 77           6.8         2.8
+## 78           6.7         3.0
+## 79           6.0         2.9
+## 80           5.7         2.6
+## 81           5.5         2.4
+## 82           5.5         2.4
+## 83           5.8         2.7
+## 84           6.0         2.7
+## 85           5.4         3.0
+## 86           6.0         3.4
+## 87           6.7         3.1
+## 88           6.3         2.3
+## 89           5.6         3.0
+## 90           5.5         2.5
+## 91           5.5         2.6
+## 92           6.1         3.0
+## 93           5.8         2.6
+## 94           5.0         2.3
+## 95           5.6         2.7
+## 96           5.7         3.0
+## 97           5.7         2.9
+## 98           6.2         2.9
+## 99           5.1         2.5
+## 100          5.7         2.8
+## 101          6.3         3.3
+## 102          5.8         2.7
+## 103          7.1         3.0
+## 104          6.3         2.9
+## 105          6.5         3.0
+## 106          7.6         3.0
+## 107          4.9         2.5
+## 108          7.3         2.9
+## 109          6.7         2.5
+## 110          7.2         3.6
+## 111          6.5         3.2
+## 112          6.4         2.7
+## 113          6.8         3.0
+## 114          5.7         2.5
+## 115          5.8         2.8
+## 116          6.4         3.2
+## 117          6.5         3.0
+## 118          7.7         3.8
+## 119          7.7         2.6
+## 120          6.0         2.2
+## 121          6.9         3.2
+## 122          5.6         2.8
+## 123          7.7         2.8
+## 124          6.3         2.7
+## 125          6.7         3.3
+## 126          7.2         3.2
+## 127          6.2         2.8
+## 128          6.1         3.0
+## 129          6.4         2.8
+## 130          7.2         3.0
+## 131          7.4         2.8
+## 132          7.9         3.8
+## 133          6.4         2.8
+## 134          6.3         2.8
+## 135          6.1         2.6
+## 136          7.7         3.0
+## 137          6.3         3.4
+## 138          6.4         3.1
+## 139          6.0         3.0
+## 140          6.9         3.1
+## 141          6.7         3.1
+## 142          6.9         3.1
+## 143          5.8         2.7
+## 144          6.8         3.2
+## 145          6.7         3.3
+## 146          6.7         3.0
+## 147          6.3         2.5
+## 148          6.5         3.0
+## 149          6.2         3.4
+## 150          5.9         3.0
+```
+
+
+---
+
+### Tip 3: Reordering your columns
 
 If you just want to bring one or more columns to the front, you can use `everything()` to add all the remaining columns.
 
@@ -244,7 +413,7 @@ iris %&gt;%
 
 ---
 
-### Tip 3: Renaming your variables in one go
+### Tip 4: Renaming all variables in one go
 
 One command to get them all in lower case. And one more to replace those dots with underscores...
 
@@ -413,8 +582,187 @@ iris %&gt;%
 ## 150          5.9         3.0          5.1         1.8  virginica
 ```
 
+---
+
+### Tip 5: Cleaning up your observations in one go
+
+The `select_all/if/at` and `rename_all/if/at` functions will only modify the variable names, not the observations. If you want to change those, use the `mutate` variant!
+
+
+```r
+library(dplyr)
+library(stringr)
+
+storms %&gt;% 
+  select(name, year, status) %&gt;% 
+  mutate_all(tolower) %&gt;% 
+  mutate_all(~str_replace_all(., " ", "_"))
+```
+
+```
+## # A tibble: 10,010 x 3
+##    name  year  status             
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;              
+##  1 amy   1975  tropical_depression
+##  2 amy   1975  tropical_depression
+##  3 amy   1975  tropical_depression
+##  4 amy   1975  tropical_depression
+##  5 amy   1975  tropical_depression
+##  6 amy   1975  tropical_depression
+##  7 amy   1975  tropical_depression
+##  8 amy   1975  tropical_depression
+##  9 amy   1975  tropical_storm     
+## 10 amy   1975  tropical_storm     
+## # ... with 10,000 more rows
+```
+
+
+
 
 ---
+
+### Tip 6: Finding the 5 highest/lowest values
+
+You can use `top_n` to find the 5 cars with the highest  horsepower without ordering them first.
+
+
+```r
+library(dplyr)
+
+mtcars %&gt;% 
+  top_n(5, hp)
+```
+
+```
+##    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## 1 14.3   8  360 245 3.21 3.570 15.84  0  0    3    4
+## 2 14.7   8  440 230 3.23 5.345 17.42  0  0    3    4
+## 3 13.3   8  350 245 3.73 3.840 15.41  0  0    3    4
+## 4 15.8   8  351 264 4.22 3.170 14.50  0  1    5    4
+## 5 15.0   8  301 335 3.54 3.570 14.60  0  1    5    8
+```
+
+---
+
+### Tip 7: Adding the amount of observations
+
+You can add the amount of observations without summarising them yourself.  
+And if you don't like the default column name `n`, just change it again with a `rename()` statement.
+
+
+```r
+library(dplyr)
+
+mtcars %&gt;% 
+  select(-(drat:vs)) %&gt;% 
+  add_count(cyl) %&gt;% rename(n_cyl = n) %&gt;% 
+  add_count(am) %&gt;% rename(n_am = n)
+```
+
+```
+## # A tibble: 32 x 9
+##      mpg   cyl  disp    hp    am  gear  carb n_cyl  n_am
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+##  1  21       6  160    110     1     4     4     7    13
+##  2  21       6  160    110     1     4     4     7    13
+##  3  22.8     4  108     93     1     4     1    11    13
+##  4  21.4     6  258    110     0     3     1     7    19
+##  5  18.7     8  360    175     0     3     2    14    19
+##  6  18.1     6  225    105     0     3     1     7    19
+##  7  14.3     8  360    245     0     3     4    14    19
+##  8  24.4     4  147.    62     0     4     2    11    19
+##  9  22.8     4  141.    95     0     4     2    11    19
+## 10  19.2     6  168.   123     0     4     4     7    19
+## # ... with 22 more rows
+```
+
+
+---
+
+### Tip 8: Making new discrete variables
+
+`case_when()` can be a very powerful tool to make new discrete variables based on other columns.
+
+
+```r
+starwars %&gt;%
+  select(name, species, homeworld, birth_year, hair_color) %&gt;%
+  mutate(new_group = case_when(
+      species == "Droid" ~ "Robot",
+      homeworld == "Tatooine" &amp; hair_color == "blond" ~ "Blond Tatooinian",
+      homeworld == "Tatooine" ~ "Other Tatooinian",
+      hair_color == "blond" ~ "Blond non-Tatooinian",
+      TRUE ~ "Other Human"))
+```
+
+```
+## # A tibble: 87 x 6
+##    name               species homeworld birth_year hair_color    new_group
+##    &lt;chr&gt;              &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;    
+##  1 Luke Skywalker     Human   Tatooine        19   blond         Blond Ta~
+##  2 C-3PO              Droid   Tatooine       112   &lt;NA&gt;          Robot    
+##  3 R2-D2              Droid   Naboo           33   &lt;NA&gt;          Robot    
+##  4 Darth Vader        Human   Tatooine        41.9 none          Other Ta~
+##  5 Leia Organa        Human   Alderaan        19   brown         Other Hu~
+##  6 Owen Lars          Human   Tatooine        52   brown, grey   Other Ta~
+##  7 Beru Whitesun lars Human   Tatooine        47   brown         Other Ta~
+##  8 R5-D4              Droid   Tatooine        NA   &lt;NA&gt;          Robot    
+##  9 Biggs Darklighter  Human   Tatooine        24   black         Other Ta~
+## 10 Obi-Wan Kenobi     Human   Stewjon         57   auburn, white Other Hu~
+## # ... with 77 more rows
+```
+
+---
+
+### Tip 9: going rowwise...
+
+Mutating with aggregate functions by default will take the average/sum/... of the entire column. Via adding `rowwise()` you can aggregate within an observatioin.
+
+
+```r
+iris %&gt;% 
+  select(contains("Length")) %&gt;% 
+  rowwise() %&gt;% 
+  mutate(avg_length = mean(c(Petal.Length, Sepal.Length)))
+```
+
+```
+## Source: local data frame [150 x 3]
+## Groups: &lt;by row&gt;
+## 
+## # A tibble: 150 x 3
+##    Sepal.Length Petal.Length avg_length
+##           &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
+##  1          5.1          1.4       3.25
+##  2          4.9          1.4       3.15
+##  3          4.7          1.3       3   
+##  4          4.6          1.5       3.05
+##  5          5            1.4       3.2 
+##  6          5.4          1.7       3.55
+##  7          4.6          1.4       3   
+##  8          5            1.5       3.25
+##  9          4.4          1.4       2.9 
+## 10          4.9          1.5       3.2 
+## # ... with 140 more rows
+```
+
+---
+
+### Tip 10: Changing your column names after summarise_if
+
+If you've used the `summarise_all`, `summarise_if` and `summarise_at` variants before, you know that the variable name by default does not get changed.  
+If you do what a modified name, you can wrap your function inside `funs()` and add a tag that will be added to the variable name.
+
+
+```r
+iris %&gt;% 
+  summarise_if(is.numeric, funs(avg = mean))
+```
+
+```
+##   Sepal.Length_avg Sepal.Width_avg Petal.Length_avg Petal.Width_avg
+## 1         5.843333        3.057333            3.758        1.199333
+```
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

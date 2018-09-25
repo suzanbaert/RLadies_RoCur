@@ -13,7 +13,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
+options(htmltools.dir.version = FALSE, message = FALSE, warning = FALSE)
 
 library(dplyr)
 ```
@@ -36,7 +36,22 @@ mtcars %>%
 
 ---
 
-### Tip 2: Reordering your columns
+### Tip 2: Select columns via regex
+
+If you have matching patterns you can use `starts_with()`, `contains()` or `ends_with()`. But what if your pattern isn't thàt exact? Simple: enter regex into `matches()`
+
+```{r}
+library(dplyr)
+
+iris %>% 
+  select(matches("S.+th"))
+
+```
+
+
+---
+
+### Tip 3: Reordering your columns
 
 If you just want to bring one or more columns to the front, you can use `everything()` to add all the remaining columns.
 
@@ -51,7 +66,7 @@ iris %>%
 
 ---
 
-### Tip 3: Renaming your variables in one go
+### Tip 4: Renaming all variables in one go
 
 One command to get them all in lower case. And one more to replace those dots with underscores...
 
@@ -65,6 +80,94 @@ iris %>%
   rename_all(~str_replace_all(., "\\.", "_"))
 ```
 
+---
+
+### Tip 5: Cleaning up your observations in one go
+
+The `select_all/if/at` and `rename_all/if/at` functions will only modify the variable names, not the observations. If you want to change those, use the `mutate` variant!
+
+```{r}
+library(dplyr)
+library(stringr)
+
+storms %>% 
+  select(name, year, status) %>% 
+  mutate_all(tolower) %>% 
+  mutate_all(~str_replace_all(., " ", "_"))
+```
+
+
+
 
 ---
+
+### Tip 6: Finding the 5 highest/lowest values
+
+You can use `top_n` to find the 5 cars with the highest  horsepower without ordering them first.
+
+```{r}
+library(dplyr)
+
+mtcars %>% 
+  top_n(5, hp)
+```
+
+---
+
+### Tip 7: Adding the amount of observations
+
+You can add the amount of observations without summarising them yourself.  
+And if you don't like the default column name `n`, just change it again with a `rename()` statement.
+
+```{r}
+library(dplyr)
+
+mtcars %>% 
+  select(-(drat:vs)) %>% 
+  add_count(cyl) %>% rename(n_cyl = n) %>% 
+  add_count(am) %>% rename(n_am = n)
+```
+
+
+---
+
+### Tip 8: Making new discrete variables
+
+`case_when()` can be a very powerful tool to make new discrete variables based on other columns.
+
+```{r}
+starwars %>%
+  select(name, species, homeworld, birth_year, hair_color) %>%
+  mutate(new_group = case_when(
+      species == "Droid" ~ "Robot",
+      homeworld == "Tatooine" & hair_color == "blond" ~ "Blond Tatooinian",
+      homeworld == "Tatooine" ~ "Other Tatooinian",
+      hair_color == "blond" ~ "Blond non-Tatooinian",
+      TRUE ~ "Other Human"))
+```
+
+---
+
+### Tip 9: going rowwise...
+
+Mutating with aggregate functions by default will take the average/sum/... of the entire column. Via adding `rowwise()` you can aggregate within an observatioin.
+
+```{r}
+iris %>% 
+  select(contains("Length")) %>% 
+  rowwise() %>% 
+  mutate(avg_length = mean(c(Petal.Length, Sepal.Length)))
+```
+
+---
+
+### Tip 10: Changing your column names after summarise_if
+
+If you've used the `summarise_all`, `summarise_if` and `summarise_at` variants before, you know that the variable name by default does not get changed.  
+If you do what a modified name, you can wrap your function inside `funs()` and add a tag that will be added to the variable name.
+
+```{r}
+iris %>% 
+  summarise_if(is.numeric, funs(avg = mean))
+```
 
