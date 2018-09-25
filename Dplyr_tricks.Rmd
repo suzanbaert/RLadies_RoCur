@@ -1,0 +1,70 @@
+---
+title: "Dplyr tricks"
+author: "Suzan Baert"
+output:
+  xaringan::moon_reader:
+    css: ["default", "rladies-fonts", "rladies"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: ""
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+library(dplyr)
+```
+
+
+### Tip 1: Are you often selecting the same columns over and over again?
+
+You can make a vector of pre-identified columns once, and then refer to them using `one_of()` or even shorter with `!!`.
+
+```{r}
+library(dplyr)
+
+cols <- c("mpg", "cyl", "gear")
+
+mtcars %>% 
+  select(!!cols)
+
+```
+
+
+---
+
+### Tip 2: Reordering your columns
+
+If you just want to bring one or more columns to the front, you can use `everything()` to add all the remaining columns.
+
+```{r}
+library(dplyr)
+
+iris %>% 
+  select(Species, everything())
+```
+
+
+
+---
+
+### Tip 3: Renaming your variables in one go
+
+One command to get them all in lower case. And one more to replace those dots with underscores...
+
+
+```{r}
+library(dplyr)
+library(stringr)
+
+iris %>% 
+  rename_all(tolower) %>% 
+  rename_all(~str_replace_all(., "\\.", "_"))
+```
+
+
+---
+
