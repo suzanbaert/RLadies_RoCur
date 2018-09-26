@@ -1,3 +1,6 @@
 # RLadies_RoCur
 
-During the week of September 24th, I have the pleasure of being the Rotating Curator for the @WeAreRLadies twitter account. As people have asked the material, here you go!
+During the week of September 24th, I have the pleasure of being the Rotating Curator for the @WeAreRLadies twitter account. 
+
+As people have asked the material, here you go!  
+You can find a much more elaborate version [on my blog](https://suzan.rbind.io/categories/tutorial/)
