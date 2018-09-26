@@ -1,6 +1,7 @@
 ---
-title: "Dplyr tricks"
-author: "Suzan Baert"
+title: "10 Dplyr tricks"
+subtitle: "for @WeAreRLadies"
+author: "<br><br>Suzan Baert"
 output:
   xaringan::moon_reader:
     css: ["default", "rladies-fonts", "rladies"]
