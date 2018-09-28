@@ -1,5 +1,5 @@
 ---
-title: "5 forcats tricks"
+title: "3-ish forcats tricks"
 subtitle: "for @WeAreRLadies"
 author: "<br><br>Suzan Baert"
 output:
@@ -18,6 +18,8 @@ output:
 options(htmltools.dir.version = FALSE)
 
 library(dplyr)
+library(ggplot2)
+library(forcats)
 ```
 
 
@@ -65,7 +67,8 @@ You can use the `fct_other()` function to control yourself what to keep and what
 to_keep <- c("brown", "blue", "hazel")
 
 starwars %>% 
-  mutate(eye_color = fct_other(eye_color, keep = to_keep)) %>% 
+  mutate(eye_color = fct_other(eye_color, 
+                               keep = to_keep)) %>% 
   count(eye_color)
 
 ```
@@ -81,7 +84,8 @@ starwars %>%
 to_other <- c("white", "pink", "gold", "unknown", "blue-gray", "dark", "green, yellow", "red, blue")
 
 starwars %>% 
-  mutate(eye_color = fct_other(eye_color, drop = to_other)) %>% 
+  mutate(eye_color = fct_other(eye_color, 
+                               drop = to_other)) %>% 
   count(eye_color)
 ```
 
@@ -136,5 +140,45 @@ fct_relevel(weekdays_factor, "sunday", after = 2)
 ```{r}
 fct_relevel(weekdays_factor, "sunday", after = Inf)
 ```
+
+
+---
+
+### Tip 3: Changing factor levels based on count
+
+Using `fct_infreq()` to change the factor levels based on the frequency it occurs. 
+
+
+```{r include = FALSE}
+weekdays_df <- data.frame(day = sample(weekdays, 100, replace = TRUE))
+```
+
+
+.pull-left[
+
+### No ordering
+
+```{r fig.height=3.5}
+ggplot(weekdays_df) + 
+  geom_bar(aes(day), fill = "deepskyblue4")
+```
+
+]
+
+
+.pull-right[
+
+### After fct_infreq
+
+```{r fig.height=3.5}
+weekdays_df %>% 
+  mutate(day = fct_infreq(day)) %>% 
+  ggplot() + 
+  geom_bar(aes(day), fill = "deepskyblue4")
+```
+
+]
+
+
 
 

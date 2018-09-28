@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>5 forcats tricks</title>
+    <title>3-ish forcats tricks</title>
     <meta charset="utf-8">
     <meta name="author" content="  Suzan Baert" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -12,7 +12,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# 5 forcats tricks
+# 3-ish forcats tricks
 ## for <span class="citation">@WeAreRLadies</span>
 ### <br><br>Suzan Baert
 
@@ -99,7 +99,8 @@ You can use the `fct_other()` function to control yourself what to keep and what
 to_keep &lt;- c("brown", "blue", "hazel")
 
 starwars %&gt;% 
-  mutate(eye_color = fct_other(eye_color, keep = to_keep)) %&gt;% 
+  mutate(eye_color = fct_other(eye_color, 
+                               keep = to_keep)) %&gt;% 
   count(eye_color)
 ```
 
@@ -125,7 +126,8 @@ starwars %&gt;%
 to_other &lt;- c("white", "pink", "gold", "unknown", "blue-gray", "dark", "green, yellow", "red, blue")
 
 starwars %&gt;% 
-  mutate(eye_color = fct_other(eye_color, drop = to_other)) %&gt;% 
+  mutate(eye_color = fct_other(eye_color, 
+                               drop = to_other)) %&gt;% 
   count(eye_color)
 ```
 
@@ -213,6 +215,48 @@ fct_relevel(weekdays_factor, "sunday", after = Inf)
 ## [1] monday    tuesday   wednesday thursday  friday    saturday  sunday   
 ## 7 Levels: monday &lt; tuesday &lt; wednesday &lt; thursday &lt; ... &lt; sunday
 ```
+
+
+---
+
+### Tip 3: Changing factor levels based on count
+
+Using `fct_infreq()` to change the factor levels based on the frequency it occurs. 
+
+
+
+
+
+.pull-left[
+
+### No ordering
+
+
+```r
+ggplot(weekdays_df) + 
+  geom_bar(aes(day), fill = "deepskyblue4")
+```
+
+![](Forcat_tricks_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+]
+
+
+.pull-right[
+
+### After fct_infreq
+
+
+```r
+weekdays_df %&gt;% 
+  mutate(day = fct_infreq(day)) %&gt;% 
+  ggplot() + 
+  geom_bar(aes(day), fill = "deepskyblue4")
+```
+
+![](Forcat_tricks_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
