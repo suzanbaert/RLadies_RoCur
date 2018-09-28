@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>5 forcats tricks</title>
+    <meta charset="utf-8">
+    <meta name="author" content="  Suzan Baert" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# 5 forcats tricks
+## for <span class="citation">@WeAreRLadies</span>
+### <br><br>Suzan Baert
+
+---
+
+
+
+
+
+
+### Tip 1: Lumping levels together in Other
+
+You can use the `fct_lump()` function from `forcats` to keep the 3 most frequent levels and get everything else coded as 'Other'.
+
+
+.pull-left[
+### Current version
+
+
+```r
+starwars %&gt;% 
+  count(eye_color)
+```
+
+```
+## # A tibble: 15 x 2
+##    eye_color         n
+##    &lt;chr&gt;         &lt;int&gt;
+##  1 black            10
+##  2 blue             19
+##  3 blue-gray         1
+##  4 brown            21
+##  5 dark              1
+##  6 gold              1
+##  7 green, yellow     1
+##  8 hazel             3
+##  9 orange            8
+## 10 pink              1
+## 11 red               5
+## 12 red, blue         1
+## 13 unknown           3
+## 14 white             1
+## 15 yellow           11
+```
+]
+
+
+.pull-right[
+### Using fct_lump version
+
+
+```r
+library(forcats)
+
+starwars %&gt;% 
+  mutate(eye_color = fct_lump(eye_color, n=3)) %&gt;% 
+  count(eye_color)
+```
+
+```
+## # A tibble: 4 x 2
+##   eye_color     n
+##   &lt;fct&gt;     &lt;int&gt;
+## 1 blue         19
+## 2 brown        21
+## 3 yellow       11
+## 4 Other        36
+```
+]
+
+
+---
+
+### Tip 1b: Lumping levels together in Other - but under your control
+
+You can use the `fct_other()` function to control yourself what to keep and what to drop inside "other"
+
+
+.pull-left[
+### Control what to keep
+
+
+```r
+to_keep &lt;- c("brown", "blue", "hazel")
+
+starwars %&gt;% 
+  mutate(eye_color = fct_other(eye_color, keep = to_keep)) %&gt;% 
+  count(eye_color)
+```
+
+```
+## # A tibble: 4 x 2
+##   eye_color     n
+##   &lt;fct&gt;     &lt;int&gt;
+## 1 blue         19
+## 2 brown        21
+## 3 hazel         3
+## 4 Other        44
+```
+
+]
+
+
+
+.pull-right[
+### Control what to keep
+
+
+```r
+to_other &lt;- c("white", "pink", "gold", "unknown", "blue-gray", "dark", "green, yellow", "red, blue")
+
+starwars %&gt;% 
+  mutate(eye_color = fct_other(eye_color, drop = to_other)) %&gt;% 
+  count(eye_color)
+```
+
+```
+## # A tibble: 8 x 2
+##   eye_color     n
+##   &lt;fct&gt;     &lt;int&gt;
+## 1 black        10
+## 2 blue         19
+## 3 brown        21
+## 4 hazel         3
+## 5 orange        8
+## 6 red           5
+## 7 yellow       11
+## 8 Other        10
+```
+
+]
+
+---
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

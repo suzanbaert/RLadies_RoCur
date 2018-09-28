@@ -1,0 +1,90 @@
+---
+title: "5 forcats tricks"
+subtitle: "for @WeAreRLadies"
+author: "<br><br>Suzan Baert"
+output:
+  xaringan::moon_reader:
+    css: ["default", "rladies-fonts", "rladies"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: ""
+      ratio: '16:9'
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+library(dplyr)
+```
+
+
+
+### Tip 1: Lumping levels together in Other
+
+You can use the `fct_lump()` function from `forcats` to keep the 3 most frequent levels and get everything else coded as 'Other'.
+
+
+.pull-left[
+### Current version
+
+```{r}
+starwars %>% 
+  count(eye_color)
+```
+]
+
+
+.pull-right[
+### Using fct_lump version
+
+```{r}
+library(forcats)
+
+starwars %>% 
+  mutate(eye_color = fct_lump(eye_color, n=3)) %>% 
+  count(eye_color)
+
+```
+]
+
+
+---
+
+### Tip 1b: Lumping levels together in Other - but under your control
+
+You can use the `fct_other()` function to control yourself what to keep and what to drop inside "other"
+
+
+.pull-left[
+### Control what to keep separate
+
+```{r}
+to_keep <- c("brown", "blue", "hazel")
+
+starwars %>% 
+  mutate(eye_color = fct_other(eye_color, keep = to_keep)) %>% 
+  count(eye_color)
+
+```
+
+]
+
+
+
+.pull-right[
+### Control what to drop into "other"
+
+```{r}
+to_other <- c("white", "pink", "gold", "unknown", "blue-gray", "dark", "green, yellow", "red, blue")
+
+starwars %>% 
+  mutate(eye_color = fct_other(eye_color, drop = to_other)) %>% 
+  count(eye_color)
+```
+
+]
+
+---
