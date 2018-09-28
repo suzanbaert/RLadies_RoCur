@@ -92,7 +92,7 @@ You can use the `fct_other()` function to control yourself what to keep and what
 
 
 .pull-left[
-### Control what to keep
+### Control what to keep separate
 
 
 ```r
@@ -118,7 +118,7 @@ starwars %&gt;%
 
 
 .pull-right[
-### Control what to keep
+### Control what to drop into "other"
 
 
 ```r
@@ -146,6 +146,73 @@ starwars %&gt;%
 ]
 
 ---
+
+### Tip 2: Moving elements of a factor around
+
+
+
+
+You can use the `fct_relevel()` to change the order of some elements. 
+
++ The original vector:
+
+
+```r
+weekdays_factor
+```
+
+```
+## [1] monday    tuesday   wednesday thursday  friday    saturday  sunday   
+## 7 Levels: monday &lt; tuesday &lt; wednesday &lt; thursday &lt; ... &lt; sunday
+```
+
+&lt;br&gt;&lt;br&gt;
+
++ To change the starting order, add the elements you want to come first in fct_relevel.   
+Note: What does not get mentioned will be added at the end in the current order.
+
+
+```r
+fct_relevel(weekdays_factor, "sunday")
+```
+
+```
+## [1] monday    tuesday   wednesday thursday  friday    saturday  sunday   
+## 7 Levels: sunday &lt; monday &lt; tuesday &lt; wednesday &lt; thursday &lt; ... &lt; saturday
+```
+
+
+---
+
+
+### Tip 2b: Moving elements of a factor around
+
+
++ To move elements to other positions add the extra "after" element:
+
+
+```r
+fct_relevel(weekdays_factor, "sunday", after = 2)
+```
+
+```
+## [1] monday    tuesday   wednesday thursday  friday    saturday  sunday   
+## 7 Levels: monday &lt; tuesday &lt; sunday &lt; wednesday &lt; thursday &lt; ... &lt; saturday
+```
+
+&lt;br&gt;&lt;br&gt;
+
++ To move something to the very end:
+
+
+```r
+fct_relevel(weekdays_factor, "sunday", after = Inf)
+```
+
+```
+## [1] monday    tuesday   wednesday thursday  friday    saturday  sunday   
+## 7 Levels: monday &lt; tuesday &lt; wednesday &lt; thursday &lt; ... &lt; sunday
+```
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

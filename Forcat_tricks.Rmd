@@ -88,3 +88,53 @@ starwars %>%
 ]
 
 ---
+
+### Tip 2: Moving elements of a factor around
+
+```{r include = FALSE}
+
+weekdays <- c("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+weekdays_factor <- ordered(weekdays, levels=weekdays)
+
+```
+
+
+You can use the `fct_relevel()` to change the order of some elements. 
+
++ The original vector:
+
+```{r}
+weekdays_factor
+```
+
+<br><br>
+
++ To change the starting order, add the elements you want to come first in fct_relevel.   
+Note: What does not get mentioned will be added at the end in the current order.
+
+```{r}
+fct_relevel(weekdays_factor, "sunday")
+```
+
+
+---
+
+
+### Tip 2b: Moving elements of a factor around
+
+
++ To move elements to other positions add the extra "after" element:
+
+```{r}
+fct_relevel(weekdays_factor, "sunday", after = 2)
+```
+
+<br><br>
+
++ To move something to the very end:
+
+```{r}
+fct_relevel(weekdays_factor, "sunday", after = Inf)
+```
+
+
